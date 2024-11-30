@@ -309,7 +309,7 @@ jobs:
         name: ${{ env.FILE_NAME }}
         allowUpdates: true
         tag: ${{ env.FILE_NAME }}
-        token: ${{ 7951256812:AAEBjo8OhYX1LjetThUdyva7EPHC1oNp5D8 }}
+        token: ${{ secrets.GH_TOKEN }}
         body: |
           ### 📒 固件信息
           - ⚽ 固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
