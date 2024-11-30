@@ -338,8 +338,8 @@ jobs:
     - name: Telegram notification upload success
       uses: appleboy/telegram-action@master
       with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
+        to: ${{ 5740373944 }}
+        token: ${{ 7951256812:AAEBjo8OhYX1LjetThUdyva7EPHC1oNp5D8 }}
         message: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
           - ❀  固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
@@ -357,7 +357,7 @@ jobs:
     - name: Push notification upload success
       uses: xhnmt/pushplus-action@main
       with:
-        token: ${{3ff5cdf3e1564d76888884b41c0d782f}}
+        token: ${{ 3ff5cdf3e1564d76888884b41c0d782f }}
         title: "${{ env.FILE_NAME }}-${{ env.KERNEL }}编译完成"
         content: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
