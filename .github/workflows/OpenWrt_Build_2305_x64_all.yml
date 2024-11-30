@@ -309,7 +309,7 @@ jobs:
         name: ${{ env.FILE_NAME }}
         allowUpdates: true
         tag: ${{ env.FILE_NAME }}
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ 7951256812:AAEBjo8OhYX1LjetThUdyva7EPHC1oNp5D8 }}
         body: |
           ### 📒 固件信息
           - ⚽ 固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
@@ -339,7 +339,7 @@ jobs:
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
+        token: ${{  }}
         message: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
           - ❀  固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
