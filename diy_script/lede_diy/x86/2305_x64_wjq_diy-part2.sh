@@ -75,6 +75,24 @@ rm -rf kwrt-packages
 rm -rf feeds/luci/applications/{luci-app-frpc,luci-app-frps,luci-app-hd-idle,luci-app-adblock,luci-app-filebrowser}
 merge_package master https://github.com/immortalwrt/luci package/custom applications/luci-app-filebrowser applications/luci-app-syncdial applications/luci-app-eqos applications/luci-app-nps applications/luci-app-nfs applications/luci-app-frpc applications/luci-app-frps applications/luci-app-hd-idle applications/luci-app-adblock applications/luci-app-socat
 
+# homeproxy
+git clone --depth=1 https://github.com/muink/luci-app-homeproxy.git package/luci-app-homeproxy
+
+# mihomo
+git clone --depth=1 https://github.com/morytyann/OpenWrt-mihomo package/luci-app-mihomo
+
+# mosdns
+rm -rf feeds/packages/net/mosdns
+rm -rf feeds/luci/applications/luci-app-mosdns
+git clone --depth=1 -b v5 https://github.com/sbwml/luci-app-mosdns package/luci-app-mosdns
+
+# passwall
+rm -rf feeds/luci/applications/luci-app-passwall
+merge_package main https://github.com/xiaorouji/openwrt-passwall package/custom luci-app-passwall
+
+# passwall2
+# merge_package main https://github.com/xiaorouji/openwrt-passwall2 package/custom luci-app-passwall2
+
 # openclash
 rm -rf feeds/luci/applications/luci-app-openclash
 merge_package master https://github.com/vernesong/OpenClash package/custom luci-app-openclash
