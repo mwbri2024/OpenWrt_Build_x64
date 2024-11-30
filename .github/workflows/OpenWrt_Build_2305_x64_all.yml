@@ -338,8 +338,8 @@ jobs:
     - name: Telegram notification upload success
       uses: appleboy/telegram-action@master
       with:
-        to: ${{5740373944}}
-        token: ${{AAEBjo8OhYX1LjetThUdyva7EPHC1oNp5D8}}
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
           - ❀  固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
