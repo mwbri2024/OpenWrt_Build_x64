@@ -335,10 +335,29 @@ jobs:
         HMS=`echo ${hour}:${min}:${sec}`
         echo "time=$HMS" >> $GITHUB_ENV
 
+    - name: Telegram notification upload success
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
+          - ❀  固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
+          - 🔴 固件大小：Kernel=32M，rootfs=968M
+          - 💻 平台架构: ${{ env.PRODUCT_NAME }}
+          - ⚽ 固件源码: ${{ env.REPO_URL }}
+          - 💝 源码分支: ${{ env.REPO_BRANCH }}
+          - 🚀 内核版本: ${{ env.KERNEL }}
+          - 🌐 默认地址：192.168.1.11
+          - 🔑 默认密码：无密码
+          - 🧊 更新时间：${{ env.date }}
+          - 🎈 源码哈希值：${{ env.hash }}
+          https://github.com/gxnas/OpenWrt_Build_x64/releases/tag/${{ env.FILE_NAME }}
+
     - name: Push notification upload success
       uses: xhnmt/pushplus-action@main
       with:
-        token: ${{ 3ff5cdf3e1564d76888884b41c0d782f }}
+        token: ${{ secrets.PUSH_PLUS_TOKEN }}
         title: "${{ env.FILE_NAME }}-${{ env.KERNEL }}编译完成"
         content: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
