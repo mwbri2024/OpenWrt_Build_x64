@@ -58,7 +58,6 @@ if [ "$curl_ver" != "8.9.1" ]; then
 fi
 
 # 报错修复
-rm -rf staging_dir build_dir
 rm -rf feeds/packages/utils/v2dat
 rm -rf package/feeds/packages/adguardhome
 rm -rf feeds/luci/applications/luci-app-turboacc
