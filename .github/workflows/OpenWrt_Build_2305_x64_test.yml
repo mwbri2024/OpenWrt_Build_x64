@@ -113,6 +113,7 @@ jobs:
         sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
         [ -n "$AGENT_TOOLSDIRECTORY" ] && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo -E apt-get update
+        sudo -E apt install -y build-essential libssl-dev python3 g++ unzip
         sudo -E apt-get -y install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
         sudo -E apt-get -y install libfuse-dev clang
         sudo -E apt-get -y autoremove --purge
