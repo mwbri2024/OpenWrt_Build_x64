@@ -113,7 +113,6 @@ jobs:
         sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
         [ -n "$AGENT_TOOLSDIRECTORY" ] && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo -E apt-get update
-        sudo -E apt install -y build-essential libssl-dev python3 g++ unzip
         sudo -E apt-get -y install $(curl -fsSL https://is.gd/depends_ubuntu_2204)
         sudo -E apt-get -y install libfuse-dev clang
         sudo -E apt-get -y autoremove --purge
@@ -188,13 +187,10 @@ jobs:
         $GITHUB_WORKSPACE/diy_script/preset-adguard-core.sh $CLASH_KERNEL
         
         sed -i 's/CONFIG_LINUX.*/CONFIG_LINUX_6_6=y/g' .config
-        #sed -i 's/CONFIG_LINUX.*/CONFIG_LINUX_6_12=y/g' .config
         
         sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.6/g' target/linux/x86/Makefile
-        #sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.12/g' target/linux/x86/Makefile
         
-        sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.6/g' target/linux/x86/Makefile
-        #sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.12/g' target/linux/x86/Makefile
+        #sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.6/g' target/linux/x86/Makefile
 
     - name: Output compilation information
       run: |
