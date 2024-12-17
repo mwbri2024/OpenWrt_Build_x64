@@ -36,7 +36,7 @@ env:
 
 jobs:
   CheckRepo:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       REPO_URL_Lede: https://github.com/coolsnowwolf/lede
       REPO_BRANCH_Lede: master
@@ -78,7 +78,7 @@ jobs:
   Build_2305_x64_all:
     needs: [CheckRepo]
     if: ${{ needs.CheckRepo.outputs.output != 'hello' || github.event.inputs.checkupdates66 == 'true'}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout
