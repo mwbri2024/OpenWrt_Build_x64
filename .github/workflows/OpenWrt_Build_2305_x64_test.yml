@@ -22,6 +22,7 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: feeds_config/lede23.feeds.conf.default
   CONFIG_FILE: config/lede_config/2305_x64_test.config
+  CONFIGS: config/lede_config
   DIY_P1_SH: diy_script/lede_diy/x86/2305_x64_test_diy-part1.sh
   DIY_P2_SH: diy_script/lede_diy/x86/2305_x64_test_diy-part2.sh
   CLASH_KERNEL: amd64
@@ -41,7 +42,7 @@ jobs:
       REPO_BRANCH_Lede: master
       REPO_PATH_Lede : "2305_x64_test"
     outputs:
-      output: ${{ steps.outputunifreq.outputs.unifreq }}   
+      output: ${{ steps.outputunifreq.outputs.unifreq }}
     steps:
     - name: Get Commit Hash
       id: getHash
@@ -73,10 +74,10 @@ jobs:
       if: steps.cacheHash.outputs.cache-hit != 'true'
       run: |
         echo ${{ steps.getHash.outputs.commitHash_2305_x64_test }} | tee .commitHash_2305_x64_test
-
-  Build_x86_64_66:
-    needs: [CheckRepo]   
-    if: ${{ needs.Checka.outputs.output != 'hello' || github.event.inputs.checkupdates66 == 'true'}}
+# /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Build_2305_x64_test:
+    needs: [CheckRepo]
+    if: ${{ needs.CheckRepo.outputs.output != 'hello' || github.event.inputs.checkupdates66 == 'true'}}
     runs-on: ubuntu-22.04
 
     steps:
@@ -106,9 +107,9 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E swapoff -a
-        sudo -E rm -f /swapfile /mnt/swapfile
+        sudo -E rm -f /swapfile
         sudo -E snap set system refresh.retain=2
-        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
+        sudo -E rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android
         sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
         [ -n "$AGENT_TOOLSDIRECTORY" ] && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo -E apt-get update
@@ -182,24 +183,14 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        $GITHUB_WORKSPACE/diy_script/preset-OpenWrt-GXNAS.sh
         $GITHUB_WORKSPACE/diy_script/preset-clash-core.sh $CLASH_KERNEL
         $GITHUB_WORKSPACE/diy_script/preset-adguard-core.sh $CLASH_KERNEL
-
+        
         sed -i 's/CONFIG_LINUX.*/CONFIG_LINUX_6_6=y/g' .config
-
-        sed -i 's/CONFIG_TARGET_ROOTFS_PARTSIZE.*/CONFIG_TARGET_ROOTFS_PARTSIZE=5120/g' .config
-
+        
         sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.6/g' target/linux/x86/Makefile
-
+        
         #sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.6/g' target/linux/x86/Makefile
-
-    - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-      env:
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: Output compilation information
       run: |
@@ -317,8 +308,7 @@ jobs:
       with:
         name: ${{ env.FILE_NAME }}
         allowUpdates: true
-        removeArtifacts: true
-        tag:  ${{ env.FILE_NAME }}
+        tag: ${{ env.FILE_NAME }}
         token: ${{ secrets.GH_TOKEN }}
         body: |
           ### 📒 固件信息
@@ -368,7 +358,7 @@ jobs:
       uses: xhnmt/pushplus-action@main
       with:
         token: ${{ secrets.PUSH_PLUS_TOKEN }}
-        title: "[Docker]${{ env.FILE_NAME }}_${{ env.KERNEL }}编译完成"
+        title: "${{ env.FILE_NAME }}-${{ env.KERNEL }}编译完成"
         content: |
           ♨️ 【${{ env.FILE_NAME }}】项目编译完成 ♨️
           - ❀  固件名称：${{ env.FILE_NAME }}-${{ env.KERNEL }}
