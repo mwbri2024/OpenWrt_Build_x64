@@ -6,11 +6,6 @@
 # By: GXNAS
 #===============================================
 
-# Add a feed source
-sed -i "/helloworld/d" feeds.conf.default
-sed -i '$a src-git kenzok8 https://github.com/kenzok8/small-package' feeds.conf.default
-#sed -i '$a src-git gxnas https://github.com/gxnas/openwrt-packages' feeds.conf.default
-
 mkdir wget
 
 cat>rename.sh<<-\EOF
