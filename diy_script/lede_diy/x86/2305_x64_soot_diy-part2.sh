@@ -143,6 +143,9 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_U
 # 修复luci-app-ssr-plus错误
 sed -i 's/+nping//g' package/feeds/kenzok8/luci-app-ssr-plus/Makefile || true
 
+# 修复Fullconenat报错
+sed -i 's/-Werror//g' package/network/services/fullconenat-nft/Makefile
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
