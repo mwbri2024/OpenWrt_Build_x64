@@ -171,9 +171,6 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
-
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
@@ -193,6 +190,12 @@ jobs:
         sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.6/g' target/linux/x86/Makefile
         
         #sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.6/g' target/linux/x86/Makefile
+    
+    - name: Disable fullconenat-nft
+      run: |
+        sed -i '/CONFIG_PACKAGE_fullconenat-nft/d' .config || echo "CONFIG_PACKAGE_fullconenat-nft=n" >> .config
+        - name: Update feeds
+          run: cd openwrt && ./scripts/feeds update -a
 
     - name: Output compilation information
       run: |
