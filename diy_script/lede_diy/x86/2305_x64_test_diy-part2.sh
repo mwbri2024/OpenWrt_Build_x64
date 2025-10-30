@@ -146,7 +146,7 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_U
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=\@GHCODELOAD/PKG_SOURCE_URL:=https:\/\/codeload\.github\.com/g' {}
 
 # 修复luci-app-ssr-plus错误
-sed -i 's/+nping//g' package/feeds/kenzok8/luci-app-ssr-plus/Makefile || true
+#sed -i 's/+nping//g' package/feeds/kenzok8/luci-app-ssr-plus/Makefile || true
 
 # 修复Fullconenat报错
 curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
