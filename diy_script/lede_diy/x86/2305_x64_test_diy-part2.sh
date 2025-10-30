@@ -149,7 +149,7 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_U
 sed -i 's/+nping//g' package/feeds/kenzok8/luci-app-ssr-plus/Makefile || true
 
 # 修复Fullconenat报错
-sed -i 's/-Werror//g' package/network/services/fullconenat-nft/Makefile
+curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
