@@ -41,8 +41,11 @@ sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.te
 # coremark跑分定时清除
 sed -i '/\* \* \* \/etc\/coremark.sh/d' feeds/packages/utils/coremark/*
 
-# 报错修复
-rm -rf feeds/smpackage/{luci-app-bypass,luci-app-ssr-plus,luci-app-vssr}
+# 修复Shadowsocks报错
+rm -rf feeds/helloworld/shadowsocks-rust
+wget -P feeds/helloworld/shadowsocks-rust https://raw.githubusercontent.com/gxnas/OpenWrt_Build_x64/refs/heads/main/personal/shadowsocks-rust/Makefile
+rm -rf feeds/passwall_packages/shadowsocks-rust
+wget -P feeds/passwall_packages/shadowsocks-rust https://raw.githubusercontent.com/gxnas/OpenWrt_Build_x64/refs/heads/main/personal/shadowsocks-rust/Makefile
 
 #luci-app-turboacc
 rm -rf feeds/luci/applications/luci-app-turboacc
