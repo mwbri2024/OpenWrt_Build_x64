@@ -42,14 +42,7 @@ sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.te
 sed -i '/\* \* \* \/etc\/coremark.sh/d' feeds/packages/utils/coremark/*
 
 # 报错修复
-rm -rf feeds/kenzok8/v2ray-plugin
-rm -rf feeds/kenzok8/open-app-filter
-rm -rf feeds/packages/utils/v2dat
-rm -rf feeds/packages/adguardhome
-rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
-#rm -rf feeds/luci/applications/luci-app-turboacc
-#merge_package master https://github.com/xiangfeidexiaohuo/extra-ipk package/custom luci-app-adguardhome patch/luci-app-turboacc patch/wall-luci/lua-maxminddb patch/wall-luci/luci-app-vssr
-merge_package master https://github.com/xiangfeidexiaohuo/extra-ipk package/custom luci-app-adguardhome patch/wall-luci/lua-maxminddb patch/wall-luci/luci-app-vssr
+rm -rf feeds/smpackage/{luci-app-bypass,luci-app-ssr-plus,luci-app-vssr}
 
 #luci-app-turboacc
 rm -rf feeds/luci/applications/luci-app-turboacc
