@@ -57,14 +57,33 @@ if [ "$curl_ver" != "8.9.1" ]; then
     cp -rf $GITHUB_WORKSPACE/personal/curl feeds/packages/net/curl
 fi
 
-# 报错修复
-rm -rf feeds/kenzok8/v2ray-plugin
-rm -rf feeds/kenzok8/open-app-filter
-rm -rf feeds/packages/utils/v2dat
-rm -rf feeds/packages/adguardhome
-#rm -rf feeds/luci/applications/luci-app-turboacc
-#merge_package master https://github.com/xiangfeidexiaohuo/extra-ipk package/custom luci-app-adguardhome patch/luci-app-turboacc patch/wall-luci/lua-maxminddb patch/wall-luci/luci-app-vssr
-merge_package master https://github.com/xiangfeidexiaohuo/extra-ipk package/custom luci-app-adguardhome patch/wall-luci/lua-maxminddb patch/wall-luci/luci-app-vssr
+# 解决helloworld源缺少依赖问题
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/v2ray-geodata
+rm -rf feeds/packages/net/sing-box
+rm -rf feeds/packages/net/chinadns-ng
+rm -rf feeds/packages/net/dns2socks
+rm -rf feeds/packages/net/microsocks
+cp -r feeds/passwall_packages/xray-core feeds/packages/net
+cp -r feeds/passwall_packages/v2ray-geodata feeds/packages/net
+cp -r feeds/passwall_packages/sing-box feeds/packages/net
+cp -r feeds/passwall_packages/chinadns-ng feeds/packages/net
+cp -r feeds/passwall_packages/dns2socks feeds/packages/net
+cp -r feeds/passwall_packages/microsocks feeds/packages/net
+mkdir -p package/helloworld
+git clone https://github.com/immortalwrt/packages.git
+cp -r packages/net/dns2socks package/helloworld/dns2socks
+cp -r packages/net/microsocks package/helloworld/microsocks
+cp -r packages/net/ipt2socks package/helloworld/ipt2socks
+cp -r packages/net/pdnsd-alt package/helloworld/pdnsd-alt
+cp -r packages/net/redsocks2 package/helloworld/redsocks2
+rm -rf packages
+
+# 修复Shadowsocks报错
+rm -rf feeds/helloworld/shadowsocks-rust
+wget -P feeds/helloworld/shadowsocks-rust https://raw.githubusercontent.com/gxnas/OpenWrt_Build_x64/refs/heads/main/personal/shadowsocks-rust/Makefile
+rm -rf feeds/passwall_packages/shadowsocks-rust
+wget -P feeds/passwall_packages/shadowsocks-rust https://raw.githubusercontent.com/gxnas/OpenWrt_Build_x64/refs/heads/main/personal/shadowsocks-rust/Makefile
 
 #luci-app-turboacc
 rm -rf feeds/luci/applications/luci-app-turboacc
@@ -139,12 +158,6 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/include\ \.\
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/include\ \.\.\/\.\.\/lang\/golang\/golang\-package\.mk/include \$(TOPDIR)\/feeds\/packages\/lang\/golang\/golang\-package\.mk/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=\@GHREPO/PKG_SOURCE_URL:=https:\/\/github\.com/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=\@GHCODELOAD/PKG_SOURCE_URL:=https:\/\/codeload\.github\.com/g' {}
-
-# 修复luci-app-ssr-plus错误
-sed -i 's/+nping//g' package/feeds/kenzok8/luci-app-ssr-plus/Makefile || true
-
-# 修复Fullconenat报错
-sed -i 's/-Werror//g' package/network/services/fullconenat-nft/Makefile
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
