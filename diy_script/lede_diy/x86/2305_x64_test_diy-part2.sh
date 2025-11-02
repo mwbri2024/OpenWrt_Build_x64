@@ -41,6 +41,28 @@ sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.te
 # coremark跑分定时清除
 sed -i '/\* \* \* \/etc\/coremark.sh/d' feeds/packages/utils/coremark/*
 
+# 解决helloworld源缺少依赖问题
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/v2ray-geodata
+rm -rf feeds/packages/net/sing-box
+rm -rf feeds/packages/net/chinadns-ng
+rm -rf feeds/packages/net/dns2socks
+rm -rf feeds/packages/net/microsocks
+cp -r feeds/passwall_packages/xray-core feeds/packages/net
+cp -r feeds/passwall_packages/v2ray-geodata feeds/packages/net
+cp -r feeds/passwall_packages/sing-box feeds/packages/net
+cp -r feeds/passwall_packages/chinadns-ng feeds/packages/net
+cp -r feeds/passwall_packages/dns2socks feeds/packages/net
+cp -r feeds/passwall_packages/microsocks feeds/packages/net
+mkdir -p package/helloworld
+git clone https://github.com/immortalwrt/packages.git
+cp -r packages/net/dns2socks package/helloworld/dns2socks
+cp -r packages/net/microsocks package/helloworld/microsocks
+cp -r packages/net/ipt2socks package/helloworld/ipt2socks
+cp -r packages/net/pdnsd-alt package/helloworld/pdnsd-alt
+cp -r packages/net/redsocks2 package/helloworld/redsocks2
+rm -rf packages
+
 # 修复Shadowsocks报错
 rm -rf feeds/helloworld/shadowsocks-rust
 wget -P feeds/helloworld/shadowsocks-rust https://raw.githubusercontent.com/gxnas/OpenWrt_Build_x64/refs/heads/main/personal/shadowsocks-rust/Makefile
