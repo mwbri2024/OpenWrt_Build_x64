@@ -41,22 +41,6 @@ sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.te
 # coremark跑分定时清除
 sed -i '/\* \* \* \/etc\/coremark.sh/d' feeds/packages/utils/coremark/*
 
-# 修改 argon 为默认主题
-sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-sed -i 's/Bootstrap theme/Argon theme/g' feeds/luci/collections/*/Makefile
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/*/Makefile
-
-# 最大连接数修改为65535
-sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
-
-# 替换curl修改版（无nghttp3、ngtcp2）
-curl_ver=$(grep -i "PKG_VERSION:=" feeds/packages/net/curl/Makefile | awk -F'=' '{print $2}')
-if [ "$curl_ver" != "8.9.1" ]; then
-    echo "当前 curl 版本是: $curl_ver,开始替换......"
-    rm -rf feeds/packages/net/curl
-    cp -rf $GITHUB_WORKSPACE/personal/curl feeds/packages/net/curl
-fi
-
 # 解决helloworld源缺少依赖问题
 rm -rf feeds/packages/net/xray-core
 rm -rf feeds/packages/net/v2ray-geodata
@@ -134,6 +118,22 @@ rm -rf feeds/luci/applications/luci-app-argon-config
 git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
 git clone --depth=1 -b js https://github.com/lwb1978/luci-theme-kucat package/luci-theme-kucat
+
+# 修改 argon 为默认主题
+sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
+sed -i 's/Bootstrap theme/Argon theme/g' feeds/luci/collections/*/Makefile
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/*/Makefile
+
+# 最大连接数修改为65535
+sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
+
+# 替换curl修改版（无nghttp3、ngtcp2）
+curl_ver=$(grep -i "PKG_VERSION:=" feeds/packages/net/curl/Makefile | awk -F'=' '{print $2}')
+if [ "$curl_ver" != "8.9.1" ]; then
+    echo "当前 curl 版本是: $curl_ver,开始替换......"
+    rm -rf feeds/packages/net/curl
+    cp -rf $GITHUB_WORKSPACE/personal/curl feeds/packages/net/curl
+fi
 
 # 更改argon主题背景
 cp -f $GITHUB_WORKSPACE/personal/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
