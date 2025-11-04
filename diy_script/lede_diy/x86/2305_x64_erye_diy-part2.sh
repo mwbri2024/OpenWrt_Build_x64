@@ -16,12 +16,12 @@ source $GITHUB_WORKSPACE/diy_script/function.sh
 rm -rf package/custom; mkdir package/custom
 
 # 修改主机名字，修改你喜欢的就行（不能纯数字或者使用中文）
-sed -i "/uci commit system/i\uci set system.@system[0].hostname='OpenWrt-erye'" package/lean/default-settings/files/zzz-default-settings
-sed -i "s/hostname='.*'/hostname='OpenWrt-erye'/g" ./package/base-files/files/bin/config_generate
+sed -i "/uci commit system/i\uci set system.@system[0].hostname='OpenWrt-GXNAS'" package/lean/default-settings/files/zzz-default-settings
+sed -i "s/hostname='.*'/hostname='OpenWrt-GXNAS'/g" ./package/base-files/files/bin/config_generate
 
 # 修改默认IP
 sed -i 's/192.168.1.1/192.168.10.1/g' package/base-files/files/bin/config_generate
-sed -i 's/192.168.1.1/192.168.10.1/g' package/base-files/luci2/bin/config_generate
+sed -i 's/192.168.1.1/192.168.10.11/g' package/base-files/luci2/bin/config_generate
 
 # 设置密码为空（安装固件时无需密码登陆，然后自己修改想要的密码）
 sed -i '/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF./d' package/lean/default-settings/files/zzz-default-settings
@@ -40,22 +40,6 @@ sed -i 's/invalid users = root/#&/g' feeds/packages/net/samba4/files/smb.conf.te
 
 # coremark跑分定时清除
 sed -i '/\* \* \* \/etc\/coremark.sh/d' feeds/packages/utils/coremark/*
-
-# 修改 argon 为默认主题
-sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-sed -i 's/Bootstrap theme/Argon theme/g' feeds/luci/collections/*/Makefile
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/*/Makefile
-
-# 最大连接数修改为65535
-sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
-
-# 替换curl修改版（无nghttp3、ngtcp2）
-curl_ver=$(grep -i "PKG_VERSION:=" feeds/packages/net/curl/Makefile | awk -F'=' '{print $2}')
-if [ "$curl_ver" != "8.9.1" ]; then
-    echo "当前 curl 版本是: $curl_ver,开始替换......"
-    rm -rf feeds/packages/net/curl
-    cp -rf $GITHUB_WORKSPACE/personal/curl feeds/packages/net/curl
-fi
 
 # 解决helloworld源缺少依赖问题
 rm -rf feeds/packages/net/xray-core
@@ -102,7 +86,7 @@ rm -rf kwrt-packages
 
 # frpc frps
 rm -rf feeds/luci/applications/{luci-app-frpc,luci-app-frps,luci-app-hd-idle,luci-app-adblock,luci-app-filebrowser}
-merge_package master https://github.com/immortalwrt/luci package/custom applications/luci-app-filebrowser applications/luci-app-syncdial applications/luci-app-eqos applications/luci-app-nps applications/luci-app-nfs applications/luci-app-frpc applications/luci-app-frps applications/luci-app-hd-idle applications/luci-app-adblock applications/luci-app-socat
+merge_package master https://github.com/immortalwrt/luci package/custom applications/luci-app-openlist applications/luci-app-filebrowser applications/luci-app-syncdial applications/luci-app-eqos applications/luci-app-nps applications/luci-app-nfs applications/luci-app-frpc applications/luci-app-frps applications/luci-app-hd-idle applications/luci-app-adblock applications/luci-app-socat
 
 # nikki
 git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki.git package/luci-app-nikki
@@ -135,6 +119,22 @@ git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon package/luci-t
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config package/luci-app-argon-config
 git clone --depth=1 -b js https://github.com/lwb1978/luci-theme-kucat package/luci-theme-kucat
 
+# 修改 argon 为默认主题
+sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
+sed -i 's/Bootstrap theme/Argon theme/g' feeds/luci/collections/*/Makefile
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/*/Makefile
+
+# 最大连接数修改为65535
+sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
+
+# 替换curl修改版（无nghttp3、ngtcp2）
+curl_ver=$(grep -i "PKG_VERSION:=" feeds/packages/net/curl/Makefile | awk -F'=' '{print $2}')
+if [ "$curl_ver" != "8.9.1" ]; then
+    echo "当前 curl 版本是: $curl_ver,开始替换......"
+    rm -rf feeds/packages/net/curl
+    cp -rf $GITHUB_WORKSPACE/personal/curl feeds/packages/net/curl
+fi
+
 # 更改argon主题背景
 cp -f $GITHUB_WORKSPACE/personal/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
@@ -145,13 +145,13 @@ sed -i 's/LEDE/OpenWrt_2305_x64_erye by GXNAS build/g' package/lean/default-sett
 # 修改右下角脚本版本信息
 sed -i 's/<a class=\"luci-link\" href=\"https:\/\/github.com\/openwrt\/luci\" target=\"_blank\">Powered by {{ version.luciname }} ({{ version.luciversion }})<\/a>/OpenWrt_2305_x64_erye by GXNAS build @R'"$build_date"'/' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
 sed -i 's|<a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank">ArgonTheme {# vPKG_VERSION #}</a>|<a class="luci-link" href="https://wp.gxnas.com" target="_blank">🌐固件编译者：【GXNAS博客】</a>|' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
-sed -i 's|{{ version.distname }} {{ version.distversion }}-{{ version.distrevision }}|<a href="https://github.com/gxnas/OpenWrt_Build_x64/releases/tag/OpenWrt_2305_x64_erye" target="_blank">👆点这里下载最新版本</a>|' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
+sed -i 's|{{ version.distname }} {{ version.distversion }}-{{ version.distrevision }}|<a href="https://d.gxnas.com" target="_blank">👆点这里下载最新版本</a>|' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
 
 # 修改登录页版本信息
 sed -i "/luci-link/d; s|<a href=\"https://github.com/jerrykuku/luci-theme-argon\" target=\"_blank\">ArgonTheme {# vPKG_VERSION #}</a>|OpenWrt_2305_x64_erye by GXNAS build @R$build_date|" package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
 
 # 修改欢迎banner
-cp -f $GITHUB_WORKSPACE/personal/banner-erye package/base-files/files/etc/banner
+cp -f $GITHUB_WORKSPACE/personal/banner package/base-files/files/etc/banner
 
 # 修改makefile
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/include\ \.\.\/\.\.\/luci\.mk/include \$(TOPDIR)\/feeds\/luci\/luci\.mk/g' {}
