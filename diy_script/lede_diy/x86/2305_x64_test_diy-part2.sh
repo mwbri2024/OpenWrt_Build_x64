@@ -146,6 +146,15 @@ sed -i 's/LEDE/OpenWrt_2305_x64_$build_name by GXNAS build/g' package/lean/defau
 # 修改右下角脚本版本信息和登录页版本信息
 cp -f $GITHUB_WORKSPACE/personal/argon/footer.ut package/luci-theme-argon/ucode/template/themes/argon/footer.ut
 cp -f $GITHUB_WORKSPACE/personal/argon/footer_login.ut package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
+sed -i "s/OpenWrt_2305_x64_build_name by GXNAS build @R build_date/OpenWrt_2305_x64_${build_name} by GXNAS build @R${build_date}/g" \
+package/luci-theme-argon/ucode/template/themes/argon/footer.ut \
+package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
+echo"修改后的footer.ut内容是："
+cat package/luci-theme-argon/ucode/template/themes/argon/footer.ut
+echo"-------------------------------------------------------------"
+echo"修改后的footer_login.ut内容是："
+cat package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
+echo"-------------------------------------------------------------"
 
 # 修改欢迎banner
 cp -f $GITHUB_WORKSPACE/personal/banner package/base-files/files/etc/banner
