@@ -148,12 +148,6 @@ cp -f $GITHUB_WORKSPACE/personal/argon/footer_login.ut package/luci-theme-argon/
 sed -i "s/OpenWrt_2305_x64_build_name by GXNAS build @R build_date/OpenWrt_2305_x64_${build_name} by GXNAS build @R${build_date}/g" \
 package/luci-theme-argon/ucode/template/themes/argon/footer.ut \
 package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
-echo"修改后的footer.ut内容是："
-cat package/luci-theme-argon/ucode/template/themes/argon/footer.ut
-echo"-------------------------------------------------------------"
-echo"修改后的footer_login.ut内容是："
-cat package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
-echo"-------------------------------------------------------------"
 
 # 修改欢迎banner
 cp -f $GITHUB_WORKSPACE/personal/banner package/base-files/files/etc/banner
