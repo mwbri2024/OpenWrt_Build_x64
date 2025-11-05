@@ -9,6 +9,7 @@
 echo "开始 DIY2 配置……"
 echo "========================="
 build_date=$(TZ=Asia/Shanghai date "+%Y.%m.%d")
+build_name="全功能版"
 
 # Git稀疏克隆，只克隆指定目录到本地
 chmod +x $GITHUB_WORKSPACE/diy_script/function.sh
@@ -140,15 +141,11 @@ cp -f $GITHUB_WORKSPACE/personal/bg1.jpg package/luci-theme-argon/htdocs/luci-st
 
 # 显示增加编译时间
 sed -i "s/DISTRIB_REVISION='R[0-9]\+\.[0-9]\+\.[0-9]\+'/DISTRIB_REVISION='@R$build_date'/g" package/lean/default-settings/files/zzz-default-settings
-sed -i 's/LEDE/OpenWrt_2305_x64_全功能版 by GXNAS build/g' package/lean/default-settings/files/zzz-default-settings
+sed -i 's/LEDE/OpenWrt_2305_x64_$build_name by GXNAS build/g' package/lean/default-settings/files/zzz-default-settings
 
-# 修改右下角脚本版本信息
-sed -i 's/<a class=\"luci-link\" href=\"https:\/\/github.com\/openwrt\/luci\" target=\"_blank\">Powered by {{ version.luciname }} ({{ version.luciversion }})<\/a>/OpenWrt_2305_x64_全功能版 by GXNAS build @R'"$build_date"'/' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
-sed -i 's|<a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank">ArgonTheme {# vPKG_VERSION #}</a>|<a class="luci-link" href="https://wp.gxnas.com" target="_blank">🌐固件编译者：【GXNAS博客】</a>|' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
-sed -i 's|{{ version.distname }} {{ version.distversion }}-{{ version.distrevision }}|<a href="https://d.gxnas.com" target="_blank">👆点这里下载最新版本</a>|' package/luci-theme-argon/ucode/template/themes/argon/footer.ut
-
-# 修改登录页版本信息
-sed -i "/luci-link/d; s|<a href=\"https://github.com/jerrykuku/luci-theme-argon\" target=\"_blank\">ArgonTheme {# vPKG_VERSION #}</a>|OpenWrt_2305_x64_全功能版 by GXNAS build @R$build_date|" package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
+# 修改右下角脚本版本信息和登录页版本信息
+cp -f $GITHUB_WORKSPACE/personal/argon/footer.ut package/luci-theme-argon/ucode/template/themes/argon/footer.ut
+cp -f $GITHUB_WORKSPACE/personal/argon/footer_login.ut package/luci-theme-argon/ucode/template/themes/argon/footer_login.ut
 
 # 修改欢迎banner
 cp -f $GITHUB_WORKSPACE/personal/banner package/base-files/files/etc/banner
