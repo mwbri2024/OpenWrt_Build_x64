@@ -20,7 +20,7 @@
 <!-- added style="text-wrap: auto" but on this page it is still not the best solution. I will take it to consideration next time :) -->
 <footer style="text-wrap: auto">
 	<div>
-		OpenWrt_2305_x64_$build_name by GXNAS build @R$build_date
+		<a href="">OpenWrt_2305_x64_$build_name by GXNAS build @R$build_date</a>
 	</div>
 </footer>
 </div>
