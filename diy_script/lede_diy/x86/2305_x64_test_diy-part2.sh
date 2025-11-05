@@ -140,7 +140,7 @@ cp -f $GITHUB_WORKSPACE/personal/bg1.jpg package/luci-theme-argon/htdocs/luci-st
 
 # 显示增加编译时间
 sed -i "s/DISTRIB_REVISION='R[0-9]\+\.[0-9]\+\.[0-9]\+'/DISTRIB_REVISION='@R$build_date'/g" package/lean/default-settings/files/zzz-default-settings
-sed -i 's/LEDE/OpenWrt_2305_x64_$build_name by GXNAS build/g' package/lean/default-settings/files/zzz-default-settings
+sed -i "s/LEDE/OpenWrt_2305_x64_${build_name} by GXNAS build/g" package/lean/default-settings/files/zzz-default-settings
 
 # 修改右下角脚本版本信息和登录页版本信息
 cp -f $GITHUB_WORKSPACE/personal/argon/footer.ut package/luci-theme-argon/ucode/template/themes/argon/footer.ut
