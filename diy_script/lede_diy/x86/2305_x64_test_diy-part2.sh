@@ -63,6 +63,7 @@ cp -r packages/net/ipt2socks package/helloworld/ipt2socks
 cp -r packages/net/pdnsd-alt package/helloworld/pdnsd-alt
 cp -r packages/net/redsocks2 package/helloworld/redsocks2
 rm -rf packages
+rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 
 # 修复Shadowsocks报错
 rm -rf feeds/helloworld/shadowsocks-rust
